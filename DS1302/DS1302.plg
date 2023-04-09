@@ -1,0 +1,215 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+E:\Library\_Compete\2023LanQiao\prepare\demo\DS1302\DS1302.uvproj
+Project File Date:  02/10/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ds1302.c...
+compiling DS1302_.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_DS1302?DS1302_
+Program Size: data=51.0 xdata=0 code=526
+creating hex file from "DS1302"...
+"DS1302" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_DS1302?DS1302_
+Program Size: data=51.0 xdata=0 code=526
+creating hex file from "DS1302"...
+"DS1302" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.C(94): error C141: syntax error near '}'
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+linking...
+Program Size: data=51.0 xdata=0 code=529
+creating hex file from "DS1302"...
+"DS1302" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  SMG_NODOT
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  MAIN
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  DS1302_CONFIG
+    MODULE:  main.obj (MAIN)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MAIN?MAIN
+*** ERROR L118: REFERENCE MADE TO ERRONEOUS EXTERNAL
+    SYMBOL:  MAIN
+    MODULE:  D:\KEIL4 C51\C51\LIB\C51S.LIB (?C_INIT)
+    ADDRESS: 0010H
+Program Size: data=58.0 xdata=0 code=979
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TIME
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  SMG_NODOT
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  WRITE_RTC_ADDR
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  READ_RTC_ADDR
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  MAIN
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  XMF_SHOWREALTIME
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  DS1302_READTIME
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  DS1302_CONFIG
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _DS1302_READBYTE
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _DS1302_WRITEBYTE
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _DISPAYSMG_BIT
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  INIT
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _INIT74HC138
+    MODULE:  main.obj (MAIN)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _DELAYSMG
+    MODULE:  main.obj (MAIN)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE_DS1302_BYTE?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_READ_DS1302_BYTE?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MAIN?MAIN
+*** ERROR L118: REFERENCE MADE TO ERRONEOUS EXTERNAL
+    SYMBOL:  MAIN
+    MODULE:  D:\KEIL4 C51\C51\LIB\C51S.LIB (?C_INIT)
+    ADDRESS: 0010H
+Program Size: data=23.0 xdata=0 code=1135
+Target not created
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE_DS1302_BYTE?DS1302
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_READ_DS1302_BYTE?DS1302
+Program Size: data=16.0 xdata=0 code=685
+creating hex file from "DS1302"...
+"DS1302" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.C(74): warning C206: 'DS1302_WriteByte': missing function-prototype
+DS1302_.C(74): error C267: 'DS1302_WriteByte': requires ANSI-style prototype
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.C(74): warning C206: 'Write_Ds1302_Byte': missing function-prototype
+DS1302_.C(74): error C267: 'Write_Ds1302_Byte': requires ANSI-style prototype
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.C(10): error C231: 'RST': redefinition
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.c(1): warning C318: can't open file 'STC15F2K61S2.h'
+DS1302_.C(10): error C231: 'RST': redefinition
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+D:\KEIL4 C51\C51\INC\REG52.H(13): error C231: 'P0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(14): error C231: 'P1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(15): error C231: 'P2': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(16): error C231: 'P3': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(17): error C231: 'PSW': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(18): error C231: 'ACC': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(19): error C231: 'B': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(20): error C231: 'SP': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(21): error C231: 'DPL': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(22): error C231: 'DPH': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(23): error C231: 'PCON': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(24): error C231: 'TCON': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(25): error C231: 'TMOD': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(26): error C231: 'TL0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(27): error C231: 'TL1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(28): error C231: 'TH0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(29): error C231: 'TH1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(30): error C231: 'IE': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(31): error C231: 'IP': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(32): error C231: 'SCON': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(33): error C231: 'SBUF': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(45): error C231: 'CY': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(46): error C231: 'AC': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(47): error C231: 'F0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(48): error C231: 'RS1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(49): error C231: 'RS0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(50): error C231: 'OV': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(51): error C231: 'P': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(54): error C231: 'TF1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(55): error C231: 'TR1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(56): error C231: 'TF0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(57): error C231: 'TR0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(58): error C231: 'IE1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(59): error C231: 'IT1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(60): error C231: 'IE0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(61): error C231: 'IT0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(64): error C231: 'EA': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(66): error C231: 'ES': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(67): error C231: 'ET1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(68): error C231: 'EX1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(69): error C231: 'ET0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(70): error C231: 'EX0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(74): error C231: 'PS': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(75): error C231: 'PT1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(76): error C231: 'PX1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(77): error C231: 'PT0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(78): error C231: 'PX0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(91): error C231: 'SM0': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(92): error C231: 'SM1': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(93): error C231: 'SM2': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(94): error C231: 'REN': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(95): error C231: 'TB8': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(96): error C231: 'RB8': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(97): error C231: 'TI': redefinition
+D:\KEIL4 C51\C51\INC\REG52.H(98): error C231: 'RI': redefinition
+DS1302_.C(10): error C231: 'RST': redefinition
+Target not created
+Build target 'Target 1'
+compiling ds1302.c...
+compiling DS1302_.c...
+DS1302_.C(10): error C231: 'RST': redefinition
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+DS1302_.C(77): warning C206: 'DS1302_WriteByte': missing function-prototype
+DS1302_.C(77): error C267: 'DS1302_WriteByte': requires ANSI-style prototype
+Target not created
+Build target 'Target 1'
+compiling DS1302_.c...
+linking...
+Program Size: data=17.0 xdata=0 code=575
+creating hex file from "DS1302"...
+"DS1302" - 0 Error(s), 0 Warning(s).
