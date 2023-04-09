@@ -1,0 +1,35 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+E:\Library\_Compete\2023LanQiao\prepare\demo\ds1302new\de1302.uvproj
+Project File Date:  04/05/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RD_DS1302?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIME_SHOW?MAIN
+Program Size: data=18.0 xdata=0 code=680
+creating hex file from "de1302"...
+"de1302" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SMG_TEST?MAIN
+Program Size: data=17.0 xdata=0 code=683
+creating hex file from "de1302"...
+"de1302" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SMG_TEST?MAIN
+Program Size: data=17.0 xdata=0 code=683
+creating hex file from "de1302"...
+"de1302" - 0 Error(s), 1 Warning(s).

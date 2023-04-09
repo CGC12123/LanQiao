@@ -1,0 +1,75 @@
+C51 COMPILER V9.01   FMQ                                                                   02/13/2023 20:09:58 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE FMQ
+OBJECT MODULE PLACED IN FMQ.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE FMQ.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          
+   3          typedef unsigned int u16;
+   4          typedef unsigned char u8;
+   5          
+   6          sbit HC138_A = P2^5;
+   7          sbit HC138_B = P2^5;
+   8          sbit HC138_C = P2^7;
+   9          
+  10          #define LED P0
+  11          
+  12          void delay_10us(u16 ten_us)//延时函数，当传入Ten_us=1时，大约延时10us
+  13          {
+  14   1              while(ten_us--);
+  15   1      }
+  16          
+  17          // 防止乱叫
+  18          void Init()
+  19          {
+  20   1              HC138_A = 1;
+  21   1              HC138_B = 0;
+  22   1              HC138_C = 1;
+  23   1      
+  24   1              P0 = 0x00;
+  25   1              P2 &= 0x1f;
+  26   1      }
+  27          
+  28          void FMQRunning()
+  29          {
+  30   1              // y4为0 使能锁存器
+  31   1              HC138_A = 1;
+  32   1              HC138_B = 0;
+  33   1              HC138_C = 1;
+  34   1      
+  35   1              P0 = 0x10; // 继电器对应位为1
+  36   1              delay_10us(50000);
+  37   1              P0 = 0x10; // 继电器对应位为1   
+  38   1              delay_10us(50000);
+  39   1              
+  40   1      
+  41   1      }
+  42          
+  43          void main()
+  44          {
+  45   1              Init();
+  46   1              while(1)
+  47   1              {
+  48   2                      //FMQRunning();
+  49   2              }
+  50   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     55    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.01   FMQ                                                                   02/13/2023 20:09:58 PAGE 2   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+E:\Library\_Compete\2023LanQiao\prepare\demo\KEY_Multi\key_multi.uvproj
+Project File Date:  02/04/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+    ADDRESS: 000DH
+Program Size: data=9.0 xdata=0 code=15
+"key_multi" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+    ADDRESS: 000DH
+Program Size: data=9.0 xdata=0 code=15
+"key_multi" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+    ADDRESS: 000DH
+Program Size: data=9.0 xdata=0 code=15
+"key_multi" - 0 Error(s), 2 Warning(s).

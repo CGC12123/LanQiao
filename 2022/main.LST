@@ -1,0 +1,467 @@
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE main.c BROWSE INCDIR(..\2022) DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "STC15F2K60S2.h"
+   2          #include "onewire.h"
+   3          #include "ds1302.h"
+   4          #include "iic.h"
+   5          
+   6          typedef unsigned char u8;
+   7          typedef unsigned int u16;
+   8          
+   9          u8 code num_nodot[18] = {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x80,0xc6,0xc0,0x86,0x8e,0
+             -xbf,0x7f};
+  10          u8 code num_dot[10] = {0x40,0x79,0x24,0x30,0x19,0x12,0x02,0x78,0x00,0x10};
+  11          
+  12          u8 code READ_RTC_ADDR[7] = {0x81, 0x83, 0x85, 0x87, 0x89, 0x8b, 0x8d};
+  13          u8 code WRITE_RTC_ADDR[7] = {0x80, 0x82, 0x84, 0x86, 0x88, 0x8a, 0x8c};
+  14          
+  15          u8 time[] = {0x50, 0x59, 0x20, 0x05, 0x03, 0x05, 0x23};
+  16          
+  17          sbit HC138_A = P2^5;
+  18          sbit HC138_B = P2^6;
+  19          sbit HC138_C = P2^7;
+  20          
+  21          sbit r1 = P3^0;
+  22          sbit r2 = P3^1;
+  23          sbit r3 = P3^2;
+  24          sbit r4 = P3^3;
+  25          
+  26          sbit c1 = P4^4;
+  27          sbit c2 = P4^2;
+  28          sbit c3 = P3^5;
+  29          sbit c4 = P3^4;
+  30          
+  31          float temp_f;
+  32          u16 temp_i;
+  33          u8 param = 23;
+  34          u8 key = 0;
+  35          u8 jdq = 0;
+  36          bit mode = 0;
+  37          u8 dat;
+  38          
+  39          unsigned char date[2];
+  40          
+  41          void delay(u8 time)
+  42          {
+  43   1              while(time --);
+  44   1      }
+  45          
+  46          void selete_hc138(u8 num)
+  47          {
+  48   1              switch (num)
+  49   1              {
+  50   2                      case 0:
+  51   2                              HC138_A = 0;
+  52   2                              HC138_B = 0;
+  53   2                              HC138_C = 0;
+  54   2                              break;
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 2   
+
+  55   2                      case 4:
+  56   2                              HC138_A = 0;
+  57   2                              HC138_B = 0;
+  58   2                              HC138_C = 1;
+  59   2                              break;
+  60   2                      case 5:
+  61   2                              HC138_A = 1;
+  62   2                              HC138_B = 0;
+  63   2                              HC138_C = 1;
+  64   2                              break;
+  65   2                      case 6:
+  66   2                              HC138_A = 0;
+  67   2                              HC138_B = 1;
+  68   2                              HC138_C = 1;
+  69   2                              break;
+  70   2                      case 7:
+  71   2                              HC138_A = 1;
+  72   2                              HC138_B = 1;
+  73   2                              HC138_C = 1;    
+  74   2                              break;
+  75   2              }
+  76   1      }
+  77          
+  78          void fmq_display(u8 pos,u8 num)
+  79          {
+  80   1              selete_hc138(6);
+  81   1              P0 = (0X01 << pos) ;
+  82   1              selete_hc138(7);
+  83   1              P0 = num;
+  84   1      }
+  85                  
+  86          void ds1302_init();
+  87          
+  88          void system_init()
+  89          {
+  90   1              selete_hc138(0);
+  91   1              P0 = 0x00;
+  92   1              selete_hc138(4);
+  93   1              P0 = 0xff;
+  94   1              
+  95   1              ds1302_init();          
+  96   1      }
+  97          
+  98          void rd_tempture()
+  99          {
+ 100   1              u16 temp;
+ 101   1              u8 high, low;
+ 102   1              init_ds18b20();
+ 103   1              Write_DS18B20(0xcc);
+ 104   1              Write_DS18B20(0x44);
+ 105   1      
+ 106   1              init_ds18b20();
+ 107   1              Write_DS18B20(0xcc);
+ 108   1              Write_DS18B20(0xbe);
+ 109   1              
+ 110   1              low = Read_DS18B20();
+ 111   1              high = Read_DS18B20();
+ 112   1              
+ 113   1              init_ds18b20();
+ 114   1      
+ 115   1              temp = (high << 8) | low;
+ 116   1              temp_f = temp * 0.0625;
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 3   
+
+ 117   1              temp_i = temp_f * 10;
+ 118   1      }
+ 119          
+ 120          void temp_display()
+ 121          {
+ 122   1              rd_tempture();
+ 123   1      
+ 124   1              fmq_display(0, 0xc1); // U
+ 125   1              delay(200);
+ 126   1              fmq_display(0, 0xff);
+ 127   1      
+ 128   1              fmq_display(1, num_nodot[1]);
+ 129   1              delay(200);
+ 130   1              fmq_display(1, 0xff);
+ 131   1      
+ 132   1              fmq_display(5, num_nodot[temp_i / 100]);
+ 133   1              delay(200);
+ 134   1              fmq_display(5, 0xff);
+ 135   1      
+ 136   1              fmq_display(6, num_dot[temp_i / 10 % 10]);
+ 137   1              delay(200);
+ 138   1              fmq_display(6, 0xff);
+ 139   1                      
+ 140   1              fmq_display(7, num_nodot[temp_i % 10]);
+ 141   1              delay(200);
+ 142   1              fmq_display(7, 0xff);
+ 143   1      
+ 144   1      }
+ 145          
+ 146          void ds1302_init()
+ 147          {
+ 148   1              u8 i;
+ 149   1              Write_Ds1302_Byte(0x8e, 0x00);
+ 150   1              for(i = 0; i < 7; i++)
+ 151   1              {
+ 152   2                      Write_Ds1302_Byte(WRITE_RTC_ADDR[i], time[i]);  
+ 153   2              }
+ 154   1              Write_Ds1302_Byte(0x8e, 0x80);
+ 155   1      }
+ 156          
+ 157          void rd_ds1302()
+ 158          {
+ 159   1              u8 i;
+ 160   1              for(i = 0; i < 7; i ++)
+ 161   1              {
+ 162   2                      time[i] = Read_Ds1302_Byte(READ_RTC_ADDR[i]);           
+ 163   2              }
+ 164   1      }
+ 165          
+ 166          void ds1302_display_1() // Ê±·Ö
+ 167          {
+ 168   1              rd_ds1302();
+ 169   1      
+ 170   1              fmq_display(0, 0xc1); // U
+ 171   1              delay(200);
+ 172   1              fmq_display(0, 0xff);
+ 173   1      
+ 174   1              fmq_display(1, num_nodot[2]);
+ 175   1              delay(200);
+ 176   1              fmq_display(1, 0xff);
+ 177   1      
+ 178   1              fmq_display(3, num_nodot[time[2] / 16]);
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 4   
+
+ 179   1              delay(200);
+ 180   1              fmq_display(3, 0xff);
+ 181   1      
+ 182   1              fmq_display(4, num_nodot[time[2] % 16]);
+ 183   1              delay(200);
+ 184   1              fmq_display(4, 0xff);
+ 185   1      
+ 186   1              fmq_display(5, 0xbf);
+ 187   1              delay(200);
+ 188   1              fmq_display(5, 0xff);
+ 189   1      
+ 190   1              fmq_display(6, num_nodot[time[1] / 16]);
+ 191   1              delay(200);
+ 192   1              fmq_display(6, 0xff);
+ 193   1      
+ 194   1              fmq_display(7, num_nodot[time[1] % 16]);
+ 195   1              delay(200);
+ 196   1              fmq_display(7, 0xff);
+ 197   1      }
+ 198          
+ 199          void ds1302_display_2() // ·ÖÃë
+ 200          {
+ 201   1              rd_ds1302();
+ 202   1      
+ 203   1              fmq_display(0, 0xc1); // U
+ 204   1              delay(500);
+ 205   1              fmq_display(0, 0xff);
+ 206   1      
+ 207   1              fmq_display(1, num_nodot[2]);
+ 208   1              delay(500);
+ 209   1              fmq_display(1, 0xff);
+ 210   1      
+ 211   1              fmq_display(3, num_nodot[time[1] / 16]);
+ 212   1              delay(500);
+ 213   1              fmq_display(3, 0xff);
+ 214   1      
+ 215   1              fmq_display(4, num_nodot[time[1] % 16]);
+ 216   1              delay(500);
+ 217   1              fmq_display(4, 0xff);
+ 218   1      
+ 219   1              fmq_display(5, 0xbf);
+ 220   1              delay(500);
+ 221   1              fmq_display(5, 0xff);
+ 222   1      
+ 223   1              fmq_display(6, num_nodot[time[0] / 16]);
+ 224   1              delay(5000);
+ 225   1              fmq_display(6, 0xff);
+ 226   1      
+ 227   1              fmq_display(7, num_nodot[time[0] % 16]);
+ 228   1              delay(5000);
+ 229   1              fmq_display(7, 0xff);
+ 230   1      }
+ 231          
+ 232          void key_scan()
+ 233          {
+ 234   1              c3 = c4 = r4 = 1;
+ 235   1              r3 = 0;
+ 236   1              if(c3 == 0)
+ 237   1              {
+ 238   2                      delay(100);
+ 239   2                      while(c3 == 0);
+ 240   2                      key = 13;
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 5   
+
+ 241   2                      mode = !mode;
+ 242   2              }
+ 243   1              if(c4 == 0)
+ 244   1              {
+ 245   2                      delay(100);
+ 246   2                      while(c4 == 0);
+ 247   2                      key = 17;
+ 248   2              }
+ 249   1              
+ 250   1              c3 = c4 = r3 = 1;
+ 251   1              r4 = 0;
+ 252   1              if(c3 == 0)
+ 253   1              {
+ 254   2                      delay(100);
+ 255   2                      while(c3 == 0);
+ 256   2                      key = 12;
+ 257   2              }
+ 258   1              if(c4 == 0)
+ 259   1              {
+ 260   2                      delay(100);
+ 261   2                      while(c4 == 0);
+ 262   2                      key = 16;
+ 263   2              }       
+ 264   1      }
+ 265          
+ 266          void set_param()
+ 267          {
+ 268   1              key_scan();
+ 269   1              if (key == 16)  
+ 270   1              {
+ 271   2                      if(param < 90)  
+ 272   2                              param ++;
+ 273   2                      key = 0;
+ 274   2              }
+ 275   1              if (key == 17)  
+ 276   1              {
+ 277   2                      if(param > 10)
+ 278   2                              param --;
+ 279   2                      key = 0;
+ 280   2              }
+ 281   1      }
+ 282          
+ 283          void param_display()
+ 284          {
+ 285   1              set_param();
+ 286   1              
+ 287   1              fmq_display(0, 0xc1); // U
+ 288   1              delay(500);
+ 289   1              fmq_display(0, 0xff);
+ 290   1              
+ 291   1              fmq_display(1, num_nodot[3]);
+ 292   1              delay(500);
+ 293   1              fmq_display(1, 0xff);
+ 294   1              
+ 295   1              fmq_display(6, num_nodot[param / 10]);
+ 296   1              delay(500);
+ 297   1              fmq_display(6, 0xff);
+ 298   1              
+ 299   1              fmq_display(7, num_nodot[param % 10]);
+ 300   1              delay(500);
+ 301   1              fmq_display(7, 0xff);           
+ 302   1      }
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 6   
+
+ 303          
+ 304          void jdq_display()
+ 305          {
+ 306   1              u8 temp1 = 0;
+ 307   1              if(mode == 0)
+ 308   1              {
+ 309   2                      selete_hc138(4);
+ 310   2                      P0 = 0xfd;
+ 311   2                      delay(200);
+ 312   2                      if ((temp_i / 10) >= param)
+ 313   2                      {
+ 314   3                              selete_hc138(5);
+ 315   3                              P0 = 0x10;
+ 316   3                      }
+ 317   2                      else
+ 318   2                      {
+ 319   3                              selete_hc138(5);
+ 320   3                              P0 = 0x00;      
+ 321   3                      }
+ 322   2              }
+ 323   1              else
+ 324   1              {
+ 325   2                      selete_hc138(4);
+ 326   2                      P0 = 0xff;
+ 327   2                      selete_hc138(5);
+ 328   2                      P0 = 0x00;
+ 329   2                      rd_ds1302();
+ 330   2                      if(time[0] == 0 && time[1] == 0)
+ 331   2                      {
+ 332   3                              selete_hc138(5);
+ 333   3                              P0 = 0x10;
+ 334   3                              selete_hc138(4);
+ 335   3                              P0 = 0xfe;
+ 336   3                              delay(200);
+ 337   3                              temp1 = 1;      
+ 338   3                      }
+ 339   2                      if(temp1 == 1 && (time[0] % 16) >= 5)
+ 340   2                      {
+ 341   3                              selete_hc138(5);
+ 342   3                              P0 = 0x00;
+ 343   3                              temp1 = 0;      
+ 344   3                      }               
+ 345   2              }
+ 346   1              selete_hc138(4);
+ 347   1              P0 = 0xff;
+ 348   1      }
+ 349          
+ 350          u8 paper = 1;
+ 351          void display_all()
+ 352          {
+ 353   1              key_scan();
+ 354   1              
+ 355   1              if(key == 12)
+ 356   1              {
+ 357   2                      paper ++;
+ 358   2                      if(paper == 4)
+ 359   2                              paper = 1;
+ 360   2                      key = 0;
+ 361   2              }
+ 362   1      
+ 363   1              if(paper == 1)
+ 364   1              {
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 7   
+
+ 365   2                      temp_display();
+ 366   2              }
+ 367   1      
+ 368   1              if(paper == 2)
+ 369   1              {
+ 370   2                      ds1302_display_1();
+ 371   2                      c3 = c4 = r4 = 1;
+ 372   2                      r3 = 0;
+ 373   2                      if(c4 == 0)
+ 374   2                      {
+ 375   3                              delay(100);
+ 376   3                              while(c4 == 0)
+ 377   3                              {
+ 378   4                                      ds1302_display_2();
+ 379   4                              }
+ 380   3                      }
+ 381   2              }
+ 382   1      
+ 383   1              if(paper == 3)
+ 384   1              {
+ 385   2                      param_display();
+ 386   2              }
+ 387   1      
+ 388   1              jdq_display();          
+ 389   1      }
+ 390          
+ 391          void dac_display(u16 dat)
+ 392          {
+ 393   1              dat = Ad_Read(0x03);
+ 394   1              fmq_display(0, num_dot[dat / 100]);
+ 395   1              delay(500);
+ 396   1              fmq_display(0, 0xff);
+ 397   1              fmq_display(1, num_nodot[dat / 10 % 10]);       
+ 398   1              delay(500);
+ 399   1              fmq_display(1, 0xff);
+ 400   1              fmq_display(2, num_nodot[dat % 10]);    
+ 401   1              delay(500);
+ 402   1              fmq_display(2, 0xff);
+ 403   1      }
+ 404          
+ 405          void eeprom_display()
+ 406          {
+ 407   1              EEPROM_Read(date, 0x01, 2);
+ 408   1              fmq_display(0, num_nodot[date[0]]);     
+ 409   1              delay(500);
+ 410   1              fmq_display(1, num_nodot[date[1]]);     
+ 411   1              delay(500);             
+ 412   1      }
+ 413          u8 temp[] = {1, 2};
+ 414          
+ 415          void main()
+ 416          {
+ 417   1              system_init();
+ 418   1              while(1)
+ 419   1              {
+ 420   2                      
+ 421   2                      //display_all();
+ 422   2                      //dac_display();
+ 423   2                      //EEPROM_Write(temp, 0x01, 2);
+ 424   2                      u16 dac = 0;
+ 425   2                      dac = Ad_Read(0x03);
+ 426   2                      dac_display(dac / 51);
+C51 COMPILER V9.01   MAIN                                                                  04/06/2023 23:17:29 PAGE 8   
+
+ 427   2                      Da_Write((5- dac) * 51);
+ 428   2              }
+ 429   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1317    ----
+   CONSTANT SIZE    =     42    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

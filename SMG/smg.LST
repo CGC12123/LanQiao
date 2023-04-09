@@ -1,0 +1,83 @@
+C51 COMPILER V9.01   SMG                                                                   02/13/2023 20:53:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE SMG
+OBJECT MODULE PLACED IN smg.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE smg.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          
+   3          typedef unsigned int u16;
+   4          typedef unsigned char u8;
+   5          
+   6          #define LED P0
+   7          
+   8          u8 smg_yang[11] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0xff}; // 对应0-9, ff为消影
+             -用
+   9          
+  10          void delay_10us(u16 ten_us)//延时函数，当传入Ten_us=1时，大约延时10us
+  11          {
+  12   1              while(ten_us--);
+  13   1      }
+  14          
+  15          void SeleteHC573(u8 channel) // 锁存器选择 用于使能对应锁存器启动对应外设
+  16          {
+  17   1              switch(channel)
+  18   1              {
+  19   2                      case 4:
+  20   2                              P2 = (P2 & 0x1f) | 0x80; // (P2 & 0x1f)选择高三位，或上0x80(1000 0000)对高三位进行判断 使高三为100
+  21   2                      break;
+  22   2                      case 5:
+  23   2                              P2 = (P2 & 0x1f) | 0xa0;
+  24   2                      break;
+  25   2                      case 6:
+  26   2                              P2 = (P2 & 0x1f) | 0xc0;
+  27   2                      break;
+  28   2                      case 7:
+  29   2                              P2 = (P2 & 0x1f) | 0xe0;
+  30   2                      break;
+  31   2              }       
+  32   1      }
+  33          
+  34          // 静态显示
+  35          void Display_bit(u8 value, u8 pos)
+  36          {
+  37   1              SeleteHC573(6);
+  38   1              P0 = 0x01 << pos;
+  39   1              SeleteHC573(7);
+  40   1              P0 = value;                     
+  41   1      }
+  42          
+  43          void Display_Dynamic()
+  44          {
+  45   1              Display_bit(smg_yang[1], 0);
+  46   1              delay_10us(500);        
+  47   1              Display_bit(smg_yang[0], 1);
+  48   1              delay_10us(500);
+  49   1      }
+  50          
+  51          void main()
+  52          {
+  53   1              while(1)
+  54   1              {
+C51 COMPILER V9.01   SMG                                                                   02/13/2023 20:53:20 PAGE 2   
+
+  55   2                      Display_Dynamic();
+  56   2              }
+  57   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    124    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

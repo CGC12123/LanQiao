@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"ds18b20.obj",
+"onewire.obj" 
+TO "ds18b20" 
+RAMSIZE(256) 

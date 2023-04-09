@@ -1,0 +1,5 @@
+".\obj\main.obj",
+".\obj\onewire.obj",
+".\obj\iic.obj" 
+TO ".\obj\2021" 
+PRINT(".\obj\2021.m51") RAMSIZE(256) 

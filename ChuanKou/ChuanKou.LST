@@ -1,0 +1,69 @@
+C51 COMPILER V9.01   CHUANKOU                                                              02/04/2023 16:01:43 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CHUANKOU
+OBJECT MODULE PLACED IN ChuanKou.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE ChuanKou.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          
+   3          sfr AUXR = 0x8e;
+   4          
+   5          typedef unsigned int u16;
+   6          typedef unsigned char u8;
+   7          
+   8          void InitUart()
+   9          {
+  10   1              TMOD |= 0X20;
+  11   1              TH1 = 0XFD;
+  12   1              TL1 = 0XFD;
+  13   1              TR1 = 1;
+  14   1      
+  15   1              SCON = 0X50;
+  16   1              AUXR = 0x00;
+  17   1      
+  18   1              EA = 1;
+  19   1              ES = 1;
+  20   1      }
+  21          
+  22          u8 date;
+  23          void ServiceUart() interrupt 4
+  24          {
+  25   1              if(RI == 1)
+  26   1              {
+  27   2                      RI = 0;
+  28   2                      date = SBUF;
+  29   2              }
+  30   1      }
+  31          
+  32          void Send(u8 dat)
+  33          {
+  34   1              SBUF = dat;
+  35   1              while(TI == 0);
+  36   1              TI = 0; 
+  37   1      }
+  38          
+  39          void main()
+  40          {
+  41   1              InitUart();
+  42   1              Send(0xa5);
+  43   1              while(1);
+  44   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     49    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.01   CHUANKOU                                                              02/04/2023 16:01:43 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

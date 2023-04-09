@@ -1,0 +1,200 @@
+C51 COMPILER V9.01   MAIN                                                                  04/05/2023 17:17:56 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE main.c BROWSE INCDIR(..\ds1302new) DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          # include "STC15F2K60S2.h"
+   2          # include "ds1302.h"
+   3          
+   4          
+   5          typedef unsigned char u8;
+   6          typedef unsigned int u16;
+   7          
+   8          sbit HC138_A = P2^5;
+   9          sbit HC138_B = P2^6;
+  10          sbit HC138_C = P2^7;
+  11          
+  12          u8 code SMG_NoDot[18] = 
+  13              {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x80,0xc6,0xc0,0x86,0x8e,0xbf,0x7f};
+  14          
+  15          u8 code READ_RTC_ADDR[7] = {0x81, 0x83, 0x85, 0x87, 0x89, 0x8b, 0x8d};
+  16          u8 code WRITE_RTC_ADDR[7] = {0x80, 0x82, 0x84, 0x86, 0x88, 0x8a, 0x8c};
+  17          
+  18          u8 time[7] = {0x30, 0x50, 0x23, 0x17, 0x02, 0x06, 0x18};
+  19          
+  20          void delay(u8 t)
+  21          {
+  22   1              while(t --);
+  23   1      }
+  24          
+  25          void selete_hc138(u8 n)
+  26          {
+  27   1              switch(n)
+  28   1              {
+  29   2                      case 0:
+  30   2                              HC138_A = 0;
+  31   2                              HC138_B = 0;
+  32   2                              HC138_C = 0;
+  33   2                              break;
+  34   2                      case 4:
+  35   2                              HC138_A = 0;
+  36   2                              HC138_B = 0;
+  37   2                              HC138_C = 1;
+  38   2                              break;
+  39   2                      case 5:
+  40   2                              HC138_A = 1;
+  41   2                              HC138_B = 0;
+  42   2                              HC138_C = 1;
+  43   2                              break;
+  44   2                      case 6:
+  45   2                              HC138_A = 0;
+  46   2                              HC138_B = 1;
+  47   2                              HC138_C = 1;
+  48   2                              break;
+  49   2                      case 7:
+  50   2                              HC138_A = 1;
+  51   2                              HC138_B = 1;
+  52   2                              HC138_C = 1;
+  53   2                              break;
+  54   2              }
+  55   1      }
+C51 COMPILER V9.01   MAIN                                                                  04/05/2023 17:17:56 PAGE 2   
+
+  56          
+  57          void system_init()
+  58          {
+  59   1      //      selete_hc138(5);
+  60   1      //      P0 = 0x00;
+  61   1              selete_hc138(4);
+  62   1              P0 = 0xff;
+  63   1              selete_hc138(0);
+  64   1              P0 = 0x00;      
+  65   1      }
+  66          
+  67          void display_smg(u8 pos, u8 num)
+  68          {
+  69   1              selete_hc138(6);
+  70   1              P0 = (0x01 << pos);
+  71   1              selete_hc138(7);
+  72   1              P0 = num;
+  73   1      }
+  74          
+  75          void ds1302_config()
+  76          {
+  77   1              u8 n;
+  78   1              Write_Ds1302_Byte(0x8e, 0x00); // 解除保护
+  79   1              for(n = 0; n < 7; n ++)
+  80   1              {
+  81   2                      Write_Ds1302_Byte(WRITE_RTC_ADDR[n], time[n]);
+  82   2              }
+  83   1              Write_Ds1302_Byte(0x8e, 0x80); // 保护
+  84   1      }
+  85          
+  86          void rd_ds1302()
+  87          {
+  88   1              u8 n;
+  89   1              for(n = 0; n < 7; n ++)
+  90   1              {
+  91   2                      time[n] = Read_Ds1302_Byte(READ_RTC_ADDR[n]);   
+  92   2              }
+  93   1      }
+  94          
+  95          void smg_test()
+  96          {
+  97   1              display_smg(0, SMG_NoDot[0]);
+  98   1              delay(200);
+  99   1              display_smg(0, 0xff);
+ 100   1              delay(200);                     
+ 101   1      }
+ 102          
+ 103          void SMG_All(unsigned char dat)
+ 104          {
+ 105   1              P0 = 0xff;
+ 106   1              selete_hc138(6);
+ 107   1              P0 = dat;
+ 108   1              selete_hc138(7);
+ 109   1      }
+ 110          
+ 111          void time_show()
+ 112          {
+ 113   1              u8 i;
+ 114   1              for(i = 0; i < 9; i ++)
+ 115   1              {
+ 116   2                      display_smg(0, SMG_NoDot[time[2] / 16]);
+ 117   2                      delay(500);
+C51 COMPILER V9.01   MAIN                                                                  04/05/2023 17:17:56 PAGE 3   
+
+ 118   2                      display_smg(0, 0xff);
+ 119   2                      delay(500);
+ 120   2      
+ 121   2                      display_smg(1, SMG_NoDot[time[2] % 16]);
+ 122   2                      delay(500);
+ 123   2                      display_smg(1, 0xff);
+ 124   2                      delay(500);
+ 125   2      
+ 126   2                      display_smg(2, SMG_NoDot[16]);
+ 127   2                      delay(500);
+ 128   2                      display_smg(2, 0xff);
+ 129   2                      delay(500);
+ 130   2      
+ 131   2                      display_smg(3, SMG_NoDot[time[1] / 16]);
+ 132   2                      delay(500);
+ 133   2                      display_smg(3, 0xff);
+ 134   2                      delay(500);
+ 135   2      
+ 136   2                      display_smg(4, SMG_NoDot[time[1] % 16]);
+ 137   2                      delay(500);
+ 138   2                      display_smg(4, 0xff);
+ 139   2                      delay(500);
+ 140   2      
+ 141   2                      display_smg(5, SMG_NoDot[16]);
+ 142   2                      delay(500);
+ 143   2                      display_smg(5, 0xff);
+ 144   2                      delay(500);
+ 145   2      
+ 146   2                      display_smg(6, SMG_NoDot[time[0] / 16]);
+ 147   2                      delay(500);
+ 148   2                      display_smg(6, 0xff);
+ 149   2                      delay(500);
+ 150   2      
+ 151   2                      display_smg(7, SMG_NoDot[time[0] % 16]);
+ 152   2                      delay(500);
+ 153   2                      display_smg(7, 0xff);
+ 154   2                      delay(500);
+ 155   2      
+ 156   2                      SMG_All(0xff);
+ 157   2                      delay(5000);
+ 158   2              }
+ 159   1      }
+ 160          
+ 161          void main()
+ 162          {
+ 163   1              system_init();
+ 164   1              ds1302_config();
+ 165   1              while(1)
+ 166   1              {
+ 167   2                      // smg_test();
+ 168   2                      rd_ds1302();
+ 169   2                      time_show();    
+ 170   2              }                                                         
+ 171   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    407    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       2
+C51 COMPILER V9.01   MAIN                                                                  04/05/2023 17:17:56 PAGE 4   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

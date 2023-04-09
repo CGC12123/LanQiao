@@ -1,0 +1,39 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+E:\Library\_Compete\2023LanQiao\prepare\demo\ZhongDuan\ZhongDuan.uvproj
+Project File Date:  02/04/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+Target has no object modules
+Target not created
+Build target 'Target 1'
+Target has no object modules
+Target not created
+Build target 'Target 1'
+Target has no object modules
+Target not created
+Build target 'Target 1'
+Target has no object modules
+Target not created
+Build target 'Target 1'
+compiling ZD.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_10US?ZD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SELETEHC573?ZD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_INT0?ZD
+Program Size: data=9.0 xdata=0 code=90
+"ZhongDuan" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+compiling ZD.c...
+ZD.C(63): error C202: 'L1': undefined identifier
+Target not created
+compiling ZD.c...
+ZD.C(63): error C202: 'L1': undefined identifier
+ZD.c - 1 Error(s), 0 Warning(s).

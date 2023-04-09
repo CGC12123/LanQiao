@@ -1,0 +1,142 @@
+C51 COMPILER V9.01   DS18B20                                                               04/05/2023 17:14:28 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN ds18b20.OBJ
+COMPILER INVOKED BY: D:\KEIL4 C51\C51\BIN\C51.EXE ds18b20.c BROWSE INCDIR(..\ds18b20) DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include "onewire.h"
+   3          
+   4          typedef unsigned char u8;
+   5          typedef unsigned int u16;
+   6          
+   7          unsigned char code SMG_NoDot[18]={0xc0,0xf9,
+   8              0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,
+   9              0x88,0x80,0xc6,0xc0,0x86,0x8e,0xbf,0x7f};
+  10          unsigned char code SMG_Dot[10]={0x40,0x79,
+  11              0x24,0x30,0x19,0x12,0x02,0x78,0x00,0x10};
+  12          float temp_f;
+  13          unsigned int temp_i;
+  14          
+  15          void delay(unsigned int t)
+  16          {
+  17   1              while(t--);
+  18   1      }
+  19           
+  20          void Init_74HC138(unsigned char channel)
+  21          {
+  22   1              switch(channel)
+  23   1              {
+  24   2                      case 4:P2 = (P2 & 0x1f) | 0x80;break;
+  25   2                      case 5:P2 = (P2 & 0x1f) | 0xa0;break;
+  26   2                      case 6:P2 = (P2 & 0x1f) | 0xc0;break;
+  27   2                      case 7:P2 = (P2 & 0x1f) | 0xe0;break;
+  28   2                      case 0:P2 = (P2 & 0x1f) | 0x00;break;
+  29   2              }
+  30   1                      P2 = (P2 & 0x1f) | 0x00;
+  31   1      }
+  32          
+  33          void  SMG_DisplayBit(unsigned char pos,unsigned char dat)
+  34          {
+  35   1              P0 = (0x01 << pos);
+  36   1              Init_74HC138(6);
+  37   1              P0 = dat;
+  38   1              Init_74HC138(7);
+  39   1      }
+  40           
+  41          void SMG_All(unsigned char dat)
+  42          {
+  43   1              P0 = 0xff;
+  44   1              Init_74HC138(6);
+  45   1              P0 = dat;
+  46   1              Init_74HC138(7);
+  47   1      }
+  48           
+  49          void Display_18b20()
+  50          {
+  51   1           SMG_DisplayBit(4,SMG_NoDot[temp_i / 1000]);        
+  52   1           delay(500);
+  53   1           SMG_DisplayBit(4,0xff);    //ÏûÒþ
+  54   1       
+  55   1               SMG_DisplayBit(5,SMG_Dot[(temp_i / 100) % 10]);
+C51 COMPILER V9.01   DS18B20                                                               04/05/2023 17:14:28 PAGE 2   
+
+  56   1               delay(200);
+  57   1               SMG_DisplayBit(5,0xff);
+  58   1               delay(200); 
+  59   1      
+  60   1               SMG_DisplayBit(6,SMG_NoDot[(temp_i / 10) % 10]);
+  61   1               delay(200);
+  62   1               SMG_DisplayBit(6,0xff);
+  63   1               delay(200);
+  64   1      
+  65   1               SMG_DisplayBit(7,SMG_NoDot[temp_i % 10]);
+  66   1               delay(200);
+  67   1               SMG_DisplayBit(7,0xff);
+  68   1               delay(200);
+  69   1      
+  70   1               SMG_All(0xff);
+  71   1               delay(200);
+  72   1      }
+  73          
+  74          
+  75          
+  76          void rd_18b20()
+  77          {
+  78   1              u8 high, low;
+  79   1              u16 temp;       
+  80   1              init_ds18b20();
+  81   1              Write_DS18B20(0xcc);
+  82   1              Write_DS18B20(0x44);
+  83   1              
+  84   1              init_ds18b20();
+  85   1          Write_DS18B20(0xcc);
+  86   1              Write_DS18B20(0xbe);
+  87   1      
+  88   1              low = Read_DS18B20();
+  89   1              high = Read_DS18B20();
+  90   1      
+  91   1              init_ds18b20();
+  92   1      
+  93   1              temp = (high << 8) | low;
+  94   1              temp_f = temp * 0.0625;
+  95   1              temp_i = temp_f * 100;
+  96   1              Display_18b20();
+  97   1      }       
+  98          
+  99          void Init_System()
+ 100          {
+ 101   1              P0 = 0xff;
+ 102   1              Init_74HC138(4);
+ 103   1              P0 = 0x00;
+ 104   1              Init_74HC138(5);
+ 105   1              SMG_All(0xff);
+ 106   1      }
+ 107          
+ 108          void main()
+ 109          {
+ 110   1              Init_System();
+ 111   1              while(1)
+ 112   1              {
+ 113   2               rd_18b20();
+ 114   2              }
+ 115   1      }
+
+
+C51 COMPILER V9.01   DS18B20                                                               04/05/2023 17:14:28 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    422    ----
+   CONSTANT SIZE    =     28    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

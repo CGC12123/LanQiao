@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"FMQ.obj" 
+TO "FMQ" 
+RAMSIZE(256) 

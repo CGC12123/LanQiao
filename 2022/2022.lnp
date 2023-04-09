@@ -1,0 +1,6 @@
+"main.obj",
+"ds1302.obj",
+"onewire.obj",
+"iic.obj" 
+TO "2022" 
+RAMSIZE(256) 
